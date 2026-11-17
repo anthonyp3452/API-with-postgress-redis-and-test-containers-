@@ -1,6 +1,6 @@
 # Product Catalog API (PostgreSQL + Redis Cache + Testcontainers)
 
-API de catálogo de productos construida en **TypeScript** con arquitectura limpia (Clean Architecture / Puertos y Adaptadores). Demuestra el funcionamiento integrado de **PostgreSQL** (persistencia relacional) y **Redis** (caché mediante el patrón *Cache-Aside* con TTL e invalidación).
+API de catálogo de productos construida en **TypeScript** y validada con **Vitest 4**, usando arquitectura limpia (Clean Architecture / Puertos y Adaptadores). Demuestra el funcionamiento integrado de **PostgreSQL** (persistencia relacional) y **Redis** (caché mediante el patrón *Cache-Aside* con TTL e invalidación).
 
 La suite de pruebas de integración utiliza **Vitest** y **Testcontainers** (`@testcontainers/postgresql` y `@testcontainers/redis`), ejecutándose contra contenedores reales, desechables y con puertos asignados dinámicamente, sin utilizar mocks ni depender de servicios compartidos.
 
@@ -86,6 +86,10 @@ Para modo interactivo / observador:
 ```bash
 npm run test:watch
 ```
+
+El flujo de GitHub Actions en `.github/workflows/integration.yml` compila el
+proyecto y ejecuta la suite completa dos veces en un runner limpio con Docker.
+Esto verifica también que los casos no dependen del orden ni de datos residuales.
 
 ### ¿Cómo garantiza Testcontainers el aislamiento?
 1. **Contenedores desechables**: En `beforeAll()`, Testcontainers descarga e inicia dos contenedores independientes en Docker: `PostgreSqlContainer("postgres:16-alpine")` y `RedisContainer("redis:7-alpine")`.

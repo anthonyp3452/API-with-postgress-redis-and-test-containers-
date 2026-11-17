@@ -47,6 +47,15 @@ jobs:
             echo
             echo 'Both executions used disposable Testcontainers with dynamic host ports.'
           } >> "$GITHUB_STEP_SUMMARY"
+          grep -E '^\[Testcontainers\]' first-run.log | while IFS= read -r line; do
+            echo "::notice title=Container started::$line"
+          done
+          grep -E 'Test Files|Tests ' first-run.log | while IFS= read -r line; do
+            echo "::notice title=First execution::$line"
+          done
+          grep -E 'Test Files|Tests ' second-run.log | while IFS= read -r line; do
+            echo "::notice title=Repeat execution::$line"
+          done
 
       - name: Show Docker state if a test fails
         if: failure()

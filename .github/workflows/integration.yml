@@ -9,6 +9,8 @@ jobs:
   postgres-redis-testcontainers:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      DEBUG: testcontainers*
 
     steps:
       - name: Checkout repository

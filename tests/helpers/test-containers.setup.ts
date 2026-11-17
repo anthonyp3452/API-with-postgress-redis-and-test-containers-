@@ -25,6 +25,15 @@ export async function setupTestEnvironment(): Promise<TestEnvironment> {
   // Start Redis container
   const redisContainer = await new RedisContainer('redis:7-alpine').start();
 
+  console.info(
+    `[Testcontainers] PostgreSQL container ${pgContainer.getId().slice(0, 12)} ` +
+      `(postgres:16-alpine) at ${pgContainer.getHost()}:${pgContainer.getMappedPort(5432)}`
+  );
+  console.info(
+    `[Testcontainers] Redis container ${redisContainer.getId().slice(0, 12)} ` +
+      `(redis:7-alpine) at ${redisContainer.getHost()}:${redisContainer.getMappedPort(6379)}`
+  );
+
   // Build dynamic connections without fixed ports
   const pgPool = new Pool({
     connectionString: pgContainer.getConnectionUri(),

@@ -29,10 +29,24 @@ jobs:
         run: npm run build
 
       - name: Run integration suite (first clean execution)
-        run: npm test
+        run: npm test 2>&1 | tee first-run.log
 
       - name: Run integration suite again (repeatability)
-        run: npm test
+        run: npm test 2>&1 | tee second-run.log
+
+      - name: Publish concise test evidence
+        if: always()
+        run: |
+          {
+            echo '## PostgreSQL + Redis integration evidence'
+            echo
+            echo '```text'
+            grep -E '^\[Testcontainers\]|Test Files|Tests ' first-run.log || true
+            grep -E '^\[Testcontainers\]|Test Files|Tests ' second-run.log || true
+            echo '```'
+            echo
+            echo 'Both executions used disposable Testcontainers with dynamic host ports.'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Show Docker state if a test fails
         if: failure()

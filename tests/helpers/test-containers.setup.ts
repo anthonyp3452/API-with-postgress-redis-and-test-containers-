@@ -26,11 +26,9 @@ export async function setupTestEnvironment(): Promise<TestEnvironment> {
   const redisContainer = await new RedisContainer('redis:7-alpine').start();
 
   console.info(
-    `[Testcontainers] PostgreSQL container ${pgContainer.getId().slice(0, 12)} ` +
-      `(postgres:16-alpine) at ${pgContainer.getHost()}:${pgContainer.getMappedPort(5432)}`
-  );
-  console.info(
-    `[Testcontainers] Redis container ${redisContainer.getId().slice(0, 12)} ` +
+    `[Testcontainers] PostgreSQL ${pgContainer.getId().slice(0, 12)} ` +
+      `(postgres:16-alpine) at ${pgContainer.getHost()}:${pgContainer.getMappedPort(5432)} | ` +
+      `Redis ${redisContainer.getId().slice(0, 12)} ` +
       `(redis:7-alpine) at ${redisContainer.getHost()}:${redisContainer.getMappedPort(6379)}`
   );
 

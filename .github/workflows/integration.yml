@@ -41,13 +41,13 @@ jobs:
             echo '## PostgreSQL + Redis integration evidence'
             echo
             echo '```text'
-            grep -E '^\[Testcontainers\]|Test Files|Tests ' first-run.log || true
-            grep -E '^\[Testcontainers\]|Test Files|Tests ' second-run.log || true
+            grep -E 'Testcontainers\]|Test Files|Tests ' first-run.log || true
+            grep -E 'Testcontainers\]|Test Files|Tests ' second-run.log || true
             echo '```'
             echo
             echo 'Both executions used disposable Testcontainers with dynamic host ports.'
           } >> "$GITHUB_STEP_SUMMARY"
-          containers="$(grep -E '^\[Testcontainers\]' first-run.log | paste -sd ' | ' -)"
+          containers="$(grep -E 'Testcontainers\]' first-run.log | sed 's/^.*\(\[Testcontainers\]\)/\1/' | head -n 1)"
           echo "::notice title=Containers started::$containers"
           grep -E 'Test Files|Tests ' first-run.log | while IFS= read -r line; do
             echo "::notice title=First execution::$line"
